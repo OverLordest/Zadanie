@@ -13,17 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'MainController@index');
 
-Route::get('/students', function () {
-    return view('students');
-});
+Route::get('/students', 'MainController@students');
 
-Route::get('/subjects', function () {
-    return view('subjects');
-});
+Route::post('/students/check','MainController@students_check' );
+
+Route::get('/subjects','MainController@subjects' );
 
 Route::get('/subjects/{name}', function ($name) {
     return 'Название дисциалины: '. $name;

@@ -18,7 +18,7 @@
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="http://127.0.0.1:8000/" class="nav-link px-2 link-secondary">На главную</a></li>
-            <li><a href="http://127.0.0.1:8000/students" class="nav-link px-2 link-secondary">Студенты</a></li>
+            <li><a href="http://127.0.0.1:8000/students" class="nav-link px-2 link-secondary">добавить студента</a></li>
             <li><a href="http://127.0.0.1:8000/subjects" class="nav-link px-2 link-secondary">Предметы</a></li>
             <li><a href="http://127.0.0.1:8000/" class="nav-link px-2 link-secondary">FAQs</a></li>
             <li><a href="http://127.0.0.1:8000/" class="nav-link px-2 link-secondary">About</a></li>
