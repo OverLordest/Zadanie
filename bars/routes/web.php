@@ -14,5 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::get('/students', function () {
+    return view('students');
+});
+
+Route::get('/subjects', function () {
+    return view('subjects');
+});
+
+Route::get('/subjects/{name}', function ($name) {
+    return 'Название дисциалины: '. $name;
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
