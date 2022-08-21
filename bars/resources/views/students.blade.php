@@ -37,7 +37,7 @@
             <tr>
                 <td colspan="2">{{ $el->id }}</td>
                 <td>{{ $el->student_name }}</td>
-                <td><a href = 'delete/{{ $el->id }}'>удалить</a></td>
+                <td><a href = 'deletestud/{{ $el->id }}'>удалить</a></td>
             </tr>
        <!--</div>-->
 @endforeach

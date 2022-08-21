@@ -57,7 +57,7 @@ class MainController extends Controller
     }
     public function delsub(){
         $users = DB::select('select * from subject_models');
-        return view('students',['users'=>$users]);
+        return view('subjects',['users'=>$users]);
     }
     public function destroysub($id) {
         DB::delete('delete from subject_models where id = ?',[$id]);

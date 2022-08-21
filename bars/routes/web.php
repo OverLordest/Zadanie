@@ -33,9 +33,9 @@ Route::get('/subjects/{name}', function ($name) {
 
 
 Route::get('delete-records','MainController@delstud');
-Route::get('delete/{id}','MainController@destroy');
+Route::get('deletestud/{id}','MainController@destroy');
 Route::get('delete-records','MainController@delsub');
-Route::get('delete/{id}','MainController@destroysub');
+Route::get('deletesub/{id}','MainController@destroysub');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
