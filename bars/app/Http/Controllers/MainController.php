@@ -64,7 +64,30 @@ class MainController extends Controller
         echo "запись успешно удалена.<br/>";
         echo '<a href="/subjects">нажмите для возвращения</a> ';
     }
+    public function mark()
+    {
+        $new_stud=new StudentModel();
+        $new_sub=new SubjectModel();
+        return view('mark',['new_sub'=>$new_sub->all()],['new_stud'=>$new_stud->all()]);
+    }
+    public function mark_check(Request $request_mark)
+    {
+        $valid = $request_mark->validate([
+            'stud_id' => 'required|min:1|numeric',
+            'sub_id' => 'required|min:1|numeric'
 
+        ]);
+        $indexStud = $request_mark->input('stud_id');
+        $indexSubj = $request_mark->input('sub_id');
+        //$indexGrade = $request->input('Grade');
+        DB::table('connect_stud-sub')->insert(
+            ['stud_id' => $indexStud,
+                'sub_id' => $indexSubj
+            ]);
+
+
+        return redirect()->route('mark');
+    }
 
 
 }

@@ -30,7 +30,8 @@ Route::post('/subject/check','MainController@subject_check' );
 Route::get('/subjects/{name}', function ($name) {
     return 'Название дисциалины: '. $name;
 });
-
+Route::get('/mark','MainController@mark' )->name('mark');
+Route::post('/mark/check','MainController@mark_check' );
 
 Route::get('delete-records','MainController@delstud');
 Route::get('deletestud/{id}','MainController@destroy');

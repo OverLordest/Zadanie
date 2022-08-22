@@ -18,7 +18,15 @@ class CreateStudentModelsTable extends Migration
             $table->string('student_name');
            // $table->timestamps();
         });
+        Schema::create('connect_stud-sub', function (Blueprint $table) {
+            $table->id();
+            $table->string('stud_id');
+            $table->string('sub_id');
+            $table->string('grade')->nullable();
+            // $table->timestamps();
+        });
     }
+
 
     /**
      * Reverse the migrations.
@@ -28,5 +36,6 @@ class CreateStudentModelsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('student_models');
+        Schema::dropIfExists('connect_stud-sub');
     }
 }
