@@ -130,5 +130,40 @@ class MainController extends Controller
         //dd($Stud);
         return view('sub',['content' => $StudT]);
     }
+    public function Grade_check(Request $request){
+        $valid = $request->validate([
+            'stud_id' => 'required|numeric',
+            'sub_id' => 'required',
+            'grade' => 'required|numeric|min:0|max:5'
+        ]);
+
+        $indexStudGrade = $request->input('stud_id');
+        $indexSubjGrade = $request->input('sub_id');
+        $indexGrade = $request->input('grade');
+
+
+
+        $idSubj = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
+
+        $idSubjCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
+        $idStudCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
+
+        if($idSubjCheck == NULL){
+            return view('grades',['erro' => 'Такого предмета несуществует']);
+        }
+
+        if($idStudCheck == NULL){
+            return view('grades',['erro' => 'Такого предмета несуществует']);
+        }
+
+        DB::table('connect_stud-sub')
+            ->where('sub_id', $idSubj)
+            ->where('stud_id', $indexStudGrade)
+            ->update(['grade' => $indexGrade]);
+
+
+
+        return redirect()->route('mark');
+    }
 
 }

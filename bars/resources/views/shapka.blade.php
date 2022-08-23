@@ -16,7 +16,7 @@
             <img class="bi me-2" width="40" height="32" role="png" aria-label="B" src="http://nachalo4ka.ru/wp-content/uploads/2014/06/B-v-starorusskom-stile.png">
         </a>
 
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-left mb-md-0">
             <li><a href="http://127.0.0.1:8000/" class="nav-link px-2 link-secondary">На главную</a></li>
             <li><a href="http://127.0.0.1:8000/students" class="nav-link px-2 link-secondary">Студены</a></li>
             <li><a href="http://127.0.0.1:8000/subjects" class="nav-link px-2 link-secondary">Предметы</a></li>
@@ -24,7 +24,7 @@
             <li><a href="http://127.0.0.1:8000/sub" class="nav-link px-2 link-secondary">Поиск по предметам</a></li>
         </ul>
 
-        <div class="col-md-3 text-end">
+        <div class=" text-end">
             <button type="button" class="btn btn-outline-primary me-2" onclick="window.location.href = 'http://127.0.0.1:8000/login';">Вход</button>
             <button type="button" class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/register';">Регистрация</button>
         </div>

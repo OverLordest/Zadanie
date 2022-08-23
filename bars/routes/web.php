@@ -32,6 +32,7 @@ Route::get('/subjects/{name}', function ($name) {
 });
 Route::get('/mark','MainController@mark' )->name('mark');
 Route::post('/mark/check','MainController@mark_check' );
+Route::post('/mark/grade_check','MainController@grade_check' );
 
 Route::get('/sub','MainController@sub' )->name('sub');
 Route::post('/sub/check','MainController@sub_check' );
