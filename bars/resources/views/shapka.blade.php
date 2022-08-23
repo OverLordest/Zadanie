@@ -21,7 +21,7 @@
             <li><a href="http://127.0.0.1:8000/students" class="nav-link px-2 link-secondary">Студены</a></li>
             <li><a href="http://127.0.0.1:8000/subjects" class="nav-link px-2 link-secondary">Предметы</a></li>
             <li><a href="http://127.0.0.1:8000/mark" class="nav-link px-2 link-secondary">Привязка предметов и оценки</a></li>
-            <li><a href="http://127.0.0.1:8000/" class="nav-link px-2 link-secondary">About</a></li>
+            <li><a href="http://127.0.0.1:8000/sub" class="nav-link px-2 link-secondary">Поиск по предметам</a></li>
         </ul>
 
         <div class="col-md-3 text-end">

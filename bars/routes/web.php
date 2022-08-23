@@ -33,6 +33,9 @@ Route::get('/subjects/{name}', function ($name) {
 Route::get('/mark','MainController@mark' )->name('mark');
 Route::post('/mark/check','MainController@mark_check' );
 
+Route::get('/sub','MainController@sub' )->name('sub');
+Route::post('/sub/check','MainController@sub_check' );
+
 Route::get('delete-records','MainController@delstud');
 Route::get('deletestud/{id}','MainController@destroy');
 Route::get('delete-records','MainController@delsub');
