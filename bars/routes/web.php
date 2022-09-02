@@ -33,8 +33,12 @@ Route::get('/sub','MainController@sub' )->name('sub');
 Route::post('/sub/check','MainController@sub_check' );
 
 Route::get('deletestud/{id}','MainController@destroy');
-
+//Route::post('/deletestud/{id}', 'MainController@destroy')->name('sendName');
 Route::get('deletesub/{id}','MainController@destroysub');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/showTable', 'MainController@showTable');
+Route::post('/sendName', 'MainController@sendName')->name('sendName');
+Route::post('/deleteName', 'MainController@deleteName')->name('deleteID');

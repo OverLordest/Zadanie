@@ -142,4 +142,22 @@ class MainController extends Controller
         echo "запись успешно удалена.<br/>";
         echo '<a href="/subjects">нажмите для возвращения</a> ';
     }
+    public function showTable(){
+        $users = DB::table('student_models')->get();
+        return response()->json(['users' => $users]);
+    }
+    public function sendName(request $request){
+        $index = $request->input('FIO');
+        DB::table('student_models')->insert(
+            ['student_name' => $index]
+        );
+        return view('students');
+    }
+    public function deleteName(request $request){
+
+        $index = $request->input('deleteID');
+        DB::delete('delete from student_models where id = ?',[$index]);
+        DB::delete('delete from [connect_stud-sub] where stud_id = ?',[$index]);
+
+    }
 }

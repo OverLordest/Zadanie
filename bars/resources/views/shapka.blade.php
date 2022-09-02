@@ -6,6 +6,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta name="csrf-token" content="<?php echo csrf_token(); ?>">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
@@ -27,11 +31,14 @@
         </ul>
 
         <div class=" text-end">
-            <button type="button" class="btn btn-outline-primary me-2" onclick="window.location.href = 'http://127.0.0.1:8000/login';">Вход</button>
-            <button type="button" class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/register';">Регистрация</button>
+            <button type="button" class="btn btn-outline-primary me-2" onclick="window.location.href = 'http://bars/login';">Вход</button>
+            <button type="button" class="btn btn-primary" onclick="window.location.href = 'http://bars/register';">Регистрация</button>
         </div>
     </header>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 @yield('main_content')
 </body>
 </html>
