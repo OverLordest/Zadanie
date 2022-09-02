@@ -103,40 +103,42 @@ class MainController extends Controller
     {
         return view('sub',['content' => []]);
     }
-    public function sub_check(Request $request_sub_search)
+    public function sub_check(Request $request)
     {
-        $valid = $request_sub_search->validate([
-            'sub_id' => 'required|min:1|max:40'
+        $valid = $request->validate([
+            'sub_id' => 'required|min:1',
         ]);
 
-        $indexSubj = $request_sub_search->input('sub_id');
-        $idSubj = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
-        $idStud = DB::table('connect_stud-sub')->where('sub_id',$idSubj)->get();
 
-        $StudT = $idStud->toArray();
+        $indexSubj = $request->input('sub_id');
 
-        $Stud = array_column($StudT,'stud_id');
-        $StudT = DB::table('student_models')->whereIn('id',$Stud)->get();
+        $sel = DB::select('SELECT
+            student_models.student_name,
+            subject_models.subject_name,
+            [connect_stud-sub].grade,
+            [connect_stud-sub].id
+        FROM student_models
+        JOIN [connect_stud-sub]
+        ON student_models.id = [connect_stud-sub].stud_id
+        JOIN subject_models
+        ON subject_models.id = [connect_stud-sub].sub_id;');
 
-        return view('sub',['content' => $StudT]);
+        $tempSel = collect($sel);
+        $TSel = $tempSel ->whereIn('subject_name',$indexSubj);
+
+        return view('sub',['content' => $TSel]);
     }
  //удаление студетов
-        public function delstud(){
-        $users = DB::select('select * from student_models');
-        return view('students',['users'=>$users]);
-    }
         public function destroy($id) {
         DB::delete('delete from student_models where id = ?',[$id]);
+        DB::delete('delete from [connect_stud-sub] where stud_id = ?',[$id]);
         echo "запись успешно удалена.<br/>";
         echo '<a href="/students">нажмите для возвращения</a> ';
     }
  //удаление предметов
-    public function delsub(){
-        $users = DB::select('select * from subject_models');
-        return view('subjects',['users'=>$users]);
-    }
     public function destroysub($id) {
         DB::delete('delete from subject_models where id = ?',[$id]);
+        DB::delete('delete from [connect_stud-sub] where sub_id = ?',[$id]);
         echo "запись успешно удалена.<br/>";
         echo '<a href="/subjects">нажмите для возвращения</a> ';
     }

@@ -30,14 +30,18 @@
         <tr>
             <td >ID</td>
             <td>Имя студента</td>
+            <td>Оценка</td>
         </tr>
-        @foreach($content as $el)
+        @foreach($content as $el )
             <tr>
                 <td>{{ $el->id}}</td>
-                <td>{{$el->student_name}}</td>
+                <td>{{ $el->student_name}}</td>
+                <td>{{ $el->grade}}</td>
 
             </tr>
+
         @endforeach
+
     </table>
 
 
