@@ -20,7 +20,7 @@ class MainController extends Controller
         $new_stud=new StudentModel();
         return view('students',['new_stud'=>$new_stud->all()]);
     }
-    public function students_check(Request $request)
+   /* public function students_check(Request $request)
     {
         $valid = $request->validate([
             'student' => 'required|min:2|max:40'
@@ -29,6 +29,24 @@ class MainController extends Controller
         $new_stud->student_name = $request->input('student');
         $new_stud->save();
         return redirect()->route('students');
+    }*/
+    public function showTable(){
+        $users = DB::table('student_models')->get();
+        return response()->json(['users' => $users]);
+    }
+    public function sendName(request $request){
+        $index = $request->input('FIO');
+        DB::table('student_models')->insert(
+            ['student_name' => $index]
+        );
+        return view('students');
+    }
+    public function deleteName(request $request){
+
+        $index = $request->input('deleteID');
+        DB::delete('delete from student_models where id = ?',[$index]);
+        DB::delete('delete from [connect_stud-sub] where stud_id = ?',[$index]);
+
     }
 //предметы
     public function subjects()
@@ -36,7 +54,7 @@ class MainController extends Controller
         $new_sub=new SubjectModel();
         return view('subjects',['new_sub'=>$new_sub->all()]);
     }
-    public function subject_check(Request $request_sub)
+   /* public function subject_check(Request $request_sub)
     {
         $valid = $request_sub->validate([
             'subject' => 'required|min:2|max:40'
@@ -45,6 +63,24 @@ class MainController extends Controller
         $new_sub->subject_name = $request_sub->input('subject');
         $new_sub->save();
         return redirect()->route('subject');
+    }*/
+    public function showTableSub(){
+        $subj = DB::table('subject_models')->get();
+        return response()->json(['subj' => $subj]);
+    }
+    public function sendSubject(request $request){
+        $index = $request->input('Subject');
+        DB::table('subject_models')->insert(
+            ['subject_name' => $index]
+        );
+        return view('subjects');
+    }
+    public function deleteSubject(request $request){
+
+        $index = $request->input('deleteID');
+        DB::delete('delete from subject_models where id = ?',[$index]);
+        DB::delete('delete from [connect_stud-sub] where sub_id = ?',[$index]);
+
     }
 //оценки и привязка
     public function mark()
@@ -129,12 +165,12 @@ class MainController extends Controller
         return view('sub',['content' => $TSel]);
     }
  //удаление студетов
-        public function destroy($id) {
+    /*    public function destroy($id) {
         DB::delete('delete from student_models where id = ?',[$id]);
         DB::delete('delete from [connect_stud-sub] where stud_id = ?',[$id]);
         echo "запись успешно удалена.<br/>";
         echo '<a href="/students">нажмите для возвращения</a> ';
-    }
+    }*/
  //удаление предметов
     public function destroysub($id) {
         DB::delete('delete from subject_models where id = ?',[$id]);
@@ -142,22 +178,5 @@ class MainController extends Controller
         echo "запись успешно удалена.<br/>";
         echo '<a href="/subjects">нажмите для возвращения</a> ';
     }
-    public function showTable(){
-        $users = DB::table('student_models')->get();
-        return response()->json(['users' => $users]);
-    }
-    public function sendName(request $request){
-        $index = $request->input('FIO');
-        DB::table('student_models')->insert(
-            ['student_name' => $index]
-        );
-        return view('students');
-    }
-    public function deleteName(request $request){
 
-        $index = $request->input('deleteID');
-        DB::delete('delete from student_models where id = ?',[$index]);
-        DB::delete('delete from [connect_stud-sub] where stud_id = ?',[$index]);
-
-    }
 }

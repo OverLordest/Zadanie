@@ -32,7 +32,7 @@
             <td>Имя</td>
             <td>Удаление</td>
         </tr>
-    @foreach($new_stud as $el)
+   @foreach($new_stud as $el)
             <tr>
                 <td colspan="2">{{ $el->id }}</td>
                 <td>{{ $el->student_name }}</td>
@@ -43,10 +43,12 @@
     <div class="flex-center position-ref full-height" id="MainVue">
         <v-app>
             <v-main>
+                <v-form v-model="valid">
                 <h3>Введите имя студента для добавления::</h3>
                 <v-text-field
                     v-model="FIO"
-                    label="ФИО студента">
+                    label="ФИО студента"
+                >
                 </v-text-field>
                 <v-btn
                     @click="sendName">
@@ -76,6 +78,7 @@
                         </v-btn>
                     </template>
                 </v-data-table>
+                </v-form>
             </v-main>
         </v-app>
     </div>
