@@ -26,23 +26,57 @@
         </form>
     </div>
     <!--Вывод-->
-    <table border = "1">
-        <tr>
-            <td >ID</td>
-            <td>Имя студента</td>
-            <td>Оценка</td>
-        </tr>
-        @foreach($content as $el )
-            <tr>
-                <td>{{ $el->id}}</td>
-                <td>{{ $el->student_name}}</td>
-                <td>{{ $el->grade}}</td>
+    <div id="app" >
+        <v-app id="inspire" >
+            <v-card >
+                <v-card-title >
+                    Студенты по данной дисциплине:
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Поиск студента"
+                        single-line
+                        hide-details
+                    ></v-text-field>
+                </v-card-title>
+                <v-data-table
+                    :headers="headers"
+                    :items="desserts"
+                    :search="search"
+                ></v-data-table>
+            </v-card>
+        </v-app>
 
-            </tr>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data () {
+                return {
+                    search: '',
+                    headers: [
+                        { text: 'ID', value: 'id' },
+                        { text: 'имя стдента', value: 'StudName' },
+                        { text: 'Оценка', value: 'grade',sortable: false },
+                    ],
+                    desserts: [
+                            @foreach($content as $el)
+                        {
+                            id: {{ $el->id }},
+                            StudName: '{{$el->student_name}}',
+                            grade: '{{$el->grade}}',
+                            //DelStud: <button></button>,
 
-        @endforeach
+                        },
 
-    </table>
+                        @endforeach
 
+                    ],
+                        }
+                    },
+        })
+    </script>
 
 @endsection

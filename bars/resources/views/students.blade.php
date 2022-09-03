@@ -44,7 +44,7 @@
         <v-app>
             <v-main>
                 <v-form v-model="valid">
-                <h3>Введите имя студента для добавления::</h3>
+                <h3>Введите имя студента для добавления:</h3>
                 <v-text-field
                     v-model="FIO"
                     label="ФИО студента"
@@ -83,14 +83,15 @@
         </v-app>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
     <script>
         var r = new Vue({
             el: '#MainVue',
+
             vuetify: new Vuetify(),
+
             data(){
+
                 return({
                     FIO:'',
                     nameID: 'ID студента',
@@ -109,6 +110,7 @@
                 })},
 
             methods:{
+
                 sendName(){
                     let data = new FormData()
                     data.append('FIO',this.FIO)
@@ -155,6 +157,7 @@
                 },
             },
             mounted: function (){
+
                 console.log("SCP")
                 fetch('showTable',{
                     method:'post',
@@ -171,4 +174,5 @@
 
         })
     </script>
+
 @endsection

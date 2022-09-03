@@ -152,7 +152,7 @@ class MainController extends Controller
             student_models.student_name,
             subject_models.subject_name,
             [connect_stud-sub].grade,
-            [connect_stud-sub].id
+            student_models.id
         FROM student_models
         JOIN [connect_stud-sub]
         ON student_models.id = [connect_stud-sub].stud_id
@@ -161,7 +161,7 @@ class MainController extends Controller
 
         $tempSel = collect($sel);
         $TSel = $tempSel ->whereIn('subject_name',$indexSubj);
-
+        //dd($TSel);
         return view('sub',['content' => $TSel]);
     }
  //удаление студетов
@@ -172,11 +172,11 @@ class MainController extends Controller
         echo '<a href="/students">нажмите для возвращения</a> ';
     }*/
  //удаление предметов
-    public function destroysub($id) {
+  /*  public function destroysub($id) {
         DB::delete('delete from subject_models where id = ?',[$id]);
         DB::delete('delete from [connect_stud-sub] where sub_id = ?',[$id]);
         echo "запись успешно удалена.<br/>";
         echo '<a href="/subjects">нажмите для возвращения</a> ';
-    }
+    }*/
 
 }
