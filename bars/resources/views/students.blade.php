@@ -158,7 +158,6 @@
             },
             mounted: function (){
 
-                console.log("SCP")
                 fetch('showTable',{
                     method:'post',
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

@@ -108,11 +108,13 @@ class MainController extends Controller
         $valid = $request->validate([
             'stud_id' => 'required|numeric',
             'sub_id' => 'required',
+            'KM_num'=>'required|numeric|min:0|max:5',
             'grade' => 'required|numeric|min:0|max:5'
         ]);
-
+        dd($request);
         $indexStudGrade = $request->input('stud_id');
         $indexSubjGrade = $request->input('sub_id');
+        $indexKM_num=$request->input('KM_num');
         $indexGrade = $request->input('grade');
 
         $idSubj = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
@@ -139,30 +141,50 @@ class MainController extends Controller
     {
         return view('sub',['content' => []]);
     }
-    public function sub_check(Request $request)
+    public function ShowTableMark(Request $show_request)
     {
-        $valid = $request->validate([
-            'sub_id' => 'required|min:1',
-        ]);
-
-
-        $indexSubj = $request->input('sub_id');
-
-        $sel = DB::select('SELECT
+        $show_subj = $show_request->input('subject');
+        $selection = DB::select("SELECT
             student_models.student_name,
-            subject_models.subject_name,
             [connect_stud-sub].grade,
+            [connect_stud-sub].KM_Num,
+            subject_models.subject_name,
+            [connect_stud-sub].sub_id,
             student_models.id
         FROM student_models
         JOIN [connect_stud-sub]
         ON student_models.id = [connect_stud-sub].stud_id
         JOIN subject_models
-        ON subject_models.id = [connect_stud-sub].sub_id;');
+        ON subject_models.id = [connect_stud-sub].sub_id WHERE subject_name = '".$show_subj ."'
+        ORDER BY student_models.id,[connect_stud-sub].KM_Num;");
+
+       // $selection_coll = collect($selection);
+        //$stud = $selection_coll->whereIn('subject_name',$show_subj);
+        return json_encode([$selection/*$stud*/]);
+
+       /* $indexSubj = $request->input('Subj');
+        //dd($indexSubj);
+        $sel = DB::select('SELECT
+            student_models.student_name,
+            subject_models.subject_name,
+            [connect_stud-sub].grade,
+            [connect_stud-sub].KM_Num,
+            student_models.id
+        FROM student_models
+        JOIN [connect_stud-sub]
+        ON student_models.id = [connect_stud-sub].stud_id
+        JOIN subject_models
+        ON subject_models.id = [connect_stud-sub].sub_id
+        order by student_models.id,[connect_stud-sub].KM_Num
+;');
 
         $tempSel = collect($sel);
+       // dd($tempSel);
         $TSel = $tempSel ->whereIn('subject_name',$indexSubj);
-        //dd($TSel);
-        return view('sub',['content' => $TSel]);
+       // dd($TSel);
+       // return view('sub',['content' => $TSel]);
+        return json_encode($TSel);
+       // return ['content' => $TSel];*/
     }
  //удаление студетов
     /*    public function destroy($id) {
