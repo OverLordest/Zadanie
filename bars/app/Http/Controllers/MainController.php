@@ -20,16 +20,7 @@ class MainController extends Controller
         $new_stud=new StudentModel();
         return view('students',['new_stud'=>$new_stud->all()]);
     }
-   /* public function students_check(Request $request)
-    {
-        $valid = $request->validate([
-            'student' => 'required|min:2|max:40'
-        ]);
-        $new_stud = new StudentModel();
-        $new_stud->student_name = $request->input('student');
-        $new_stud->save();
-        return redirect()->route('students');
-    }*/
+
     public function showTable(){
         $users = DB::table('student_models')->get();
         return response()->json(['users' => $users]);
@@ -90,15 +81,27 @@ class MainController extends Controller
     public function mark_check(Request $request_mark)
     {
         $valid = $request_mark->validate([
-            'stud_id' => 'required|min:1|numeric',
+            'stud_id' => 'required',
             'sub_id' => 'required',
+            'step' => 'required',
         ]);
         $indexStud = $request_mark->input('stud_id');
         $indexSubj = $request_mark->input('sub_id');
+        $step = $request_mark->input('step');
         $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
+        //$indStud = DB::table('student_models')->where('student_name',$indexStud)->value('id');
+        /*for($step=1;step<5;$step++){
+            DB::table('connect_stud-sub')->insert(
+                ['stud_id' => $indexStud,
+                    'sub_id' => $indSub,
+                    'KM_Num' =>$step,
+                ]);
+            echo $step;
+        }*/
         DB::table('connect_stud-sub')->insert(
             ['stud_id' => $indexStud,
-                'sub_id' => $indSub
+                'sub_id' => $indSub,
+                'KM_Num' =>$step,
             ]);
 
 
@@ -111,7 +114,7 @@ class MainController extends Controller
             'KM_num'=>'required|numeric|min:0|max:5',
             'grade' => 'required|numeric|min:0|max:5'
         ]);
-        dd($request);
+        //dd($request);
         $indexStudGrade = $request->input('stud_id');
         $indexSubjGrade = $request->input('sub_id');
         $indexKM_num=$request->input('KM_num');

@@ -32,13 +32,8 @@ Route::post('Grade_check','MainController@grade_check' );
 
 
 Route::get('/sub','MainController@sub' )->name('sub');
-//Route::post('/sub','MainController@sub_check' );
 Route::post('/ShowTableMark','MainController@ShowTableMark','ShowTableMark');
-//Route::get('/ShowTableUsers_sub','MainController@ShowTableUsers_sub','ShowTableUsers_sub');
-//Route::get('/showTableSubj_sub','MainController@showTableSubj_sub','showTableSubj_sub');
 
-//Route::get('deletestud/{id}','MainController@destroy');
-//Route::post('/deletestud/{id}', 'MainController@destroy')->name('sendName');
 Route::get('deletesub/{id}','MainController@destroysub');
 Auth::routes();
 
