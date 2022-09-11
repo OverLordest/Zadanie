@@ -164,6 +164,7 @@
                     })
                     .then((data)=>{
                         this.subj = data.subj
+                        console.log(data.subj)
                     })
             }
 

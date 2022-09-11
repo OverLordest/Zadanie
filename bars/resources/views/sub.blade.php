@@ -17,28 +17,39 @@
             </ul>
         </div>
     @endif
-    <!--Форма поиска студента-->
 
     <div id="ShowStudents">
         <v-app>
             <v-main>
                 <v-form v-model="valid">
-                    <v-row>
-                        <v-col sm="4">
-                            <v-text-field
-                                solo
-                                label="Введите название дисциплины"
-                                v-model = "subject"
-                                :rules="subject_rules"
-                                :counter="40"
-                                required>
-                            </v-text-field>
-                            <v-btn
-                                @click="ShowTableMark">
-                                Показать
-                            </v-btn>
-                        </v-col>
-                    </v-row>
+                <h4>Выбор предмета</h4>
+                <v-autocomplete
+                    label="Предметы"
+                    :items="subjs"
+                    item-text="subject_name"
+                    v-model="selectedSubj"
+                    @change="ShowTableMark()"
+                    clearable
+                    filled
+                    rounded
+                    solo
+                ></v-autocomplete>
+
+                <h3>Просмотр студентов изучающих дисциплину</h3>
+
+                <v-autocomplete
+                    label="Студенты"
+                    :items="names"
+                    item-text="student_name"
+                    item-value="id"
+                    v-model="ids"
+                    @change="FUNC()"
+                    clearable
+                    filled
+                    rounded
+                    solo
+                ></v-autocomplete>
+
                 </v-form>
                 <br>
                 <v-data-table
@@ -78,14 +89,25 @@
                     students_: [],
                     students: [],
                     subject:'',
+                    original_students: [],
+                    names:[],
+                    ids:[],
+                    subjs:[],
+                    search: '',
+                    searchSubj: '',
                     valid: false,
-                    subject_rules: [
-                        v => !!v || 'Дисциплина не должна быть пустой',
-                        v => v.length <= 40 || 'Дисциплина не должна быть длиннее 40 символов',
-                    ],
                 }
             },
             methods:{
+                FUNC(){
+                    if ((this.ids == '') || (this.ids == null)){
+                        this.students = this.original_students
+                    }
+                    else{
+                        this.students = this.original_students.filter(ides => ides.id == this.ids);
+                    }
+
+                },
                 Students_fill(){
                     let this_ = this
                     this.students=[]
@@ -93,27 +115,15 @@
                     console.log(this.students_.id);
                     let row={id: '', student_name: '',subject_name:'', km1: '0' ,km2: '0' ,km3: '0', km4: '0'}
                     this.students_.forEach(function fun (curVal){
-                        //console.log('curVal=',curVal)
-                       // console.log('id_stud=',id_stud)
-                        if(curVal.id===id_stud)
+                        if(curVal.id!==id_stud)
                         {
-                           // console.log('зашли в if')
-                        }
-                        else{
-                           // console.log('зашли в else')
-                           // console.log('row =',row)
                             this_.students.push(row)
-                           // console.log('students =', this_.students)
                             row={id: '', student_name: '',subject_name:'', km1: '0' ,km2: '0' ,km3: '0', km4: '0'}
                             id_stud=curVal.id
-                           // console.log(id_stud)
                         }
                         row['id']=curVal.id
                         row['student_name']=curVal.student_name
                         row['subject_name']=curVal.subject_name
-                       // console.log('id=',curVal.id,id_stud)
-                     //   console.log('grade=',curVal.grade)
-                      //  console.log('KM_num=',curVal.KM_Num)
                         if(curVal.KM_Num == 1){
                             row['km1']=curVal.grade
                         }
@@ -126,16 +136,14 @@
                         else if(curVal.KM_Num == 4){
                             row['km4']=curVal.grade
                         }
-                       // console.log('row в конце foreach =', row)
                     })
                     this_.students.push(row)
-                    //console.log('students = ',this.students)
+                    this.original_students = this_.students;
                 },
                 ShowTableMark(){
                     let data = new FormData()
-                    data.append('subject',this.subject)
-                   // console.log(this.subject);
-                       // console.log(data);
+                    let result = this.selectedSubj
+                    data.append('subject',result)
                     fetch('ShowTableMark',{
                         method: 'POST',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -146,14 +154,48 @@
                         })
                         .then((data)=>{
                                 array = Object.values(data[0])
-                                    //console.log(array);
                                 this.students_ = array
-                          //  console.log(this.students_);
                                 this.Students_fill()
 
                         })
                 },
+                showTableUsersBySubj(){
 
+                    let data = new FormData()
+                    fetch('showTable',{
+                        method:'post',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    })
+                        .then((response)=>{
+                            return response.json()
+                        })
+                        .then((data)=>{
+                            this.names = data.users
+                            console.log(data.users)
+                        })
+
+
+                },
+                showTableSubj(){
+                    let data = new FormData()
+                    fetch('showTableSub',{
+                        method:'post',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    })
+                        .then((response)=>{
+                            return response.json()
+                        })
+                        .then((data)=>{
+                            this.subjs = data.subj
+                        })
+                },
+
+
+            },
+            mounted: function (){
+                console.log("Mounted start")
+                this.showTableSubj();
+                this.showTableUsersBySubj();
             }
         })
     </script>

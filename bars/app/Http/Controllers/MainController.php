@@ -157,48 +157,8 @@ class MainController extends Controller
         JOIN subject_models
         ON subject_models.id = [connect_stud-sub].sub_id WHERE subject_name = '".$show_subj ."'
         ORDER BY student_models.id,[connect_stud-sub].KM_Num;");
-
-       // $selection_coll = collect($selection);
-        //$stud = $selection_coll->whereIn('subject_name',$show_subj);
         return json_encode([$selection/*$stud*/]);
 
-       /* $indexSubj = $request->input('Subj');
-        //dd($indexSubj);
-        $sel = DB::select('SELECT
-            student_models.student_name,
-            subject_models.subject_name,
-            [connect_stud-sub].grade,
-            [connect_stud-sub].KM_Num,
-            student_models.id
-        FROM student_models
-        JOIN [connect_stud-sub]
-        ON student_models.id = [connect_stud-sub].stud_id
-        JOIN subject_models
-        ON subject_models.id = [connect_stud-sub].sub_id
-        order by student_models.id,[connect_stud-sub].KM_Num
-;');
-
-        $tempSel = collect($sel);
-       // dd($tempSel);
-        $TSel = $tempSel ->whereIn('subject_name',$indexSubj);
-       // dd($TSel);
-       // return view('sub',['content' => $TSel]);
-        return json_encode($TSel);
-       // return ['content' => $TSel];*/
     }
- //удаление студетов
-    /*    public function destroy($id) {
-        DB::delete('delete from student_models where id = ?',[$id]);
-        DB::delete('delete from [connect_stud-sub] where stud_id = ?',[$id]);
-        echo "запись успешно удалена.<br/>";
-        echo '<a href="/students">нажмите для возвращения</a> ';
-    }*/
- //удаление предметов
-  /*  public function destroysub($id) {
-        DB::delete('delete from subject_models where id = ?',[$id]);
-        DB::delete('delete from [connect_stud-sub] where sub_id = ?',[$id]);
-        echo "запись успешно удалена.<br/>";
-        echo '<a href="/subjects">нажмите для возвращения</a> ';
-    }*/
 
 }
