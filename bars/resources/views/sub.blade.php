@@ -19,7 +19,7 @@
     @endif
 
     <div id="ShowStudents">
-        <v-app>
+        <v-app id="inspire">
             <v-main>
                 <v-form v-model="valid">
                 <h4>Выбор предмета</h4>
@@ -39,7 +39,7 @@
 
                 <v-autocomplete
                     label="Студенты"
-                    :items="names"
+                    :items="original_students"
                     item-text="student_name"
                     item-value="id"
                     v-model="ids"
@@ -57,8 +57,36 @@
                     :items="students"
                     :single-select= true
                     item-key="name"
-                    show-select
                     class="elevation-1">
+                    <template
+                        v-slot:item._actions="{ item }"
+                    >
+                        <!--<div>ред/удал</div>
+                        <v-btn>
+                            del
+                        </v-btn>
+                        <v-hover v-slot:default>
+                        <v-icon>
+                            mdi-badminton
+                        </v-icon>
+                        </v-hover>-->
+
+                        <v-chip-group>
+                            <v-btn icon @click="Change">
+                                    <v-icon>
+                                        mdi-pencil
+                                    </v-icon>
+                            </v-btn>
+                            <v-btn icon @click="Delete">
+                                    <v-icon
+                                        >
+                                        mdi-delete
+                                    </v-icon>
+                            </v-btn>
+                        </v-chip-group>
+
+
+                    </template>
                     <template v-slot:top>
                     </template>
                 </v-data-table>
@@ -85,11 +113,13 @@
                         { text: 'КМ3', value: 'km3' },
                         { text: 'КМ4', value: 'km4' },
                         { text: 'Оценка', value: 'grade' },
+                        {text:'Изменить/удадлить',value:'_actions'},
                     ],
                     students_: [],
                     students: [],
                     subject:'',
                     original_students: [],
+                    selectedSubj:[],
                     names:[],
                     ids:[],
                     subjs:[],
@@ -99,7 +129,9 @@
                 }
             },
             methods:{
+                //Функция для выбора студентов в дисциплине
                 FUNC(){
+                    console.log('1')
                     if ((this.ids == '') || (this.ids == null)){
                         this.students = this.original_students
                     }
@@ -112,7 +144,7 @@
                     let this_ = this
                     this.students=[]
                     let id_stud=this.students_[0].id
-                    console.log(this.students_.id);
+                   // console.log(this.students_.id);
                     let row={id: '', student_name: '',subject_name:'', km1: '0' ,km2: '0' ,km3: '0', km4: '0'}
                     this.students_.forEach(function fun (curVal){
                         if(curVal.id!==id_stud)
@@ -141,23 +173,27 @@
                     this.original_students = this_.students;
                 },
                 ShowTableMark(){
-                    let data = new FormData()
-                    let result = this.selectedSubj
-                    data.append('subject',result)
-                    fetch('ShowTableMark',{
-                        method: 'POST',
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        body: data
-                    })
-                        .then((response)=>{
-                            return response.json()
+                    //console.log('234')
+                    if(this.selectedSubj){
+                        let data = new FormData()
+                        let result = this.selectedSubj
+                        data.append('subject',result)
+                        fetch('ShowTableMark',{
+                            method: 'POST',
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            body: data
                         })
-                        .then((data)=>{
+                            .then((response)=>{
+                                return response.json()
+                            })
+                            .then((data)=>{
                                 array = Object.values(data[0])
                                 this.students_ = array
                                 this.Students_fill()
 
-                        })
+                            })
+                    }
+
                 },
                 showTableUsersBySubj(){
 
@@ -190,12 +226,20 @@
                         })
                 },
 
-
+                Change(){
+                    console.log('change')
+                    alert('Change')
+                },
+                Delete(){
+                    console.log('Delete')
+                    alert('Delete')
+                },
             },
+
             mounted: function (){
                 console.log("Mounted start")
                 this.showTableSubj();
-                this.showTableUsersBySubj();
+              //  this.showTableUsersBySubj();
             }
         })
     </script>

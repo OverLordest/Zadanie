@@ -16,35 +16,27 @@
             </ul>
         </div>
     @endif
-    <h1 class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">Привязкак студентов:</h1>
     <div class="paded nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
 
-        <br>
         <!--Форма для привязки-->
-        <form method="post" action="/mark/check" style="width: 400px; padding-left: 10px;">
-            @csrf
-        <!--    <input type="stud_id" name="stud_id" id="stud_id" placeholder="введите id студента" class="form-control" style="width: 400px; padding-left: 10px;" ><br>
-            <input type="sub_id" name="sub_id" id="sub_id" placeholder="введите название предмета" class="form-control" style="width: 400px; padding-left: 10px;" ><br>
-            <button type="submit" class="btn btn-success">Принять</button><br>-->
-        </form>
     </div>
     <h1 class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">Простановка оценок:</h1>
     <div class="paded nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <br>
         <!--Форма для проставления оценок-->
-        <form method="post" action="/mark/grade_check" style="width: 400px; padding-left: 10px;">
+     <!--   <form method="post" action="/mark/grade_check" style="width: 400px; padding-left: 10px;">
             @csrf
             <input type="stud_id" name="stud_id" id="stud_id" placeholder="введите id студента" class="form-control" style="width: 400px; padding-left: 10px;" ><br>
             <input type="sub_id" name="sub_id" id="sub_id" placeholder="введите название предмета" class="form-control" style="width: 400px; padding-left: 10px;" ><br>
             <input type="grade" name="grade" id="grade" placeholder="введите оценку" class="form-control" style="width: 400px; padding-left: 10px;" ><br>
             <button type="submit" class="btn btn-success">Принять</button><br>
-        </form>
+        </form>-->
     </div>
     <div class="flex-center position-ref full-height" id="app">
         <v-app>
             <v-main>
                 <v-form v-model="valid">
-                    <h4>Выбор предмета</h4>
+                    <h3>Выбор предмета</h3>
                     <v-autocomplete
                         label="Предметы"
                         :items="subjs"
@@ -57,7 +49,7 @@
                         solo
                     ></v-autocomplete>
 
-                    <h3>Студенты</h3>
+                    <h3>Выбор студента</h3>
 
                     <v-autocomplete
                         v-model="stud_id"
@@ -75,7 +67,20 @@
                         @click="sendPriv">
                         Привязать
                     </v-btn>
-
+                    <!--<v-text-field
+                        v-model="KM_Num"
+                        label="Номер КМа"
+                    >
+                    </v-text-field>
+                    <v-text-field
+                        v-model="grade"
+                        label="Оценка"
+                    >
+                    </v-text-field>
+                    <v-btn
+                        @click="sendMark">
+                        Проставить оценку
+                    </v-btn>-->
                 </v-form>
                 <br>
               <!--  <v-data-table
@@ -127,6 +132,8 @@
                     valid: false,
                     stud_id:[],
                     sub_id:[],
+                   // KM_Num:[],
+                   // grade:[],
                 }
             },
             methods:{
@@ -138,7 +145,7 @@
                     console.log(this.stud_id)
                     console.log(data)*/
                     var step;
-                    for(step=1;step<5;step++){
+                    for(step=1;step<2;step++){
                         let data = new FormData()
                         data.append('sub_id',this.sub_id)
                         data.append('stud_id',this.stud_id)
@@ -157,66 +164,23 @@
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     })*/
 
-                },
-                /*FUNC(){
-                    if ((this.ids == '') || (this.ids == null)){
-                        this.students = this.original_students
-                    }
-                    else{
-                        this.students = this.original_students.filter(ides => ides.id == this.ids);
-                    }
-
-                },*/
-                /*Students_fill(){
-                    let this_ = this
-                    this.students=[]
-                    let id_stud=this.students_[0].id
-                    console.log(this.students_.id);
-                    let row={id: '', student_name: '',subject_name:'', km1: '0' ,km2: '0' ,km3: '0', km4: '0'}
-                    this.students_.forEach(function fun (curVal){
-                        if(curVal.id!==id_stud)
-                        {
-                            this_.students.push(row)
-                            row={id: '', student_name: '',subject_name:'', km1: '0' ,km2: '0' ,km3: '0', km4: '0'}
-                            id_stud=curVal.id
-                        }
-                        row['id']=curVal.id
-                        row['student_name']=curVal.student_name
-                        row['subject_name']=curVal.subject_name
-                        if(curVal.KM_Num == 1){
-                            row['km1']=curVal.grade
-                        }
-                        else if(curVal.KM_Num == 2){
-                            row['km2']=curVal.grade
-                        }
-                        else if(curVal.KM_Num == 3){
-                            row['km3']=curVal.grade
-                        }
-                        else if(curVal.KM_Num == 4){
-                            row['km4']=curVal.grade
-                        }
-                    })
-                    this_.students.push(row)
-                    this.original_students = this_.students;
-                },
-                ShowTableMark(){
+                },/*
+                sendMark(){
                     let data = new FormData()
-                    let result = this.selectedSubj
-                    data.append('subject',result)
-                    fetch('ShowTableMark',{
-                        method: 'POST',
+                    data.append('sub_id',this.sub_id)
+                    data.append('stud_id',this.stud_id)
+                    data.append('KM_Num',this.KM_Num)
+                    console.log(this.sub_id)
+                    console.log(this.stud_id)
+                    console.log(this.KM_Num)
+                    data.append('grade',this.grade)
+                    console.log(this.grade)
+                    //console.log(data)
+                    fetch('Grade_check',{
+                        method:'post',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        body: data
                     })
-                        .then((response)=>{
-                            return response.json()
-                        })
-                        .then((data)=>{
-                            array = Object.values(data[0])
-                            this.students_ = array
-                            this.Students_fill()
 
-                        })
                 },*/
                 showTableUsersBySubj(){
 

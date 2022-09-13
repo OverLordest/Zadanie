@@ -90,52 +90,54 @@ class MainController extends Controller
         $step = $request_mark->input('step');
         $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
         //$indStud = DB::table('student_models')->where('student_name',$indexStud)->value('id');
-        /*for($step=1;step<5;$step++){
+
+        for($step=1;$step<5;$step++){
             DB::table('connect_stud-sub')->insert(
                 ['stud_id' => $indexStud,
                     'sub_id' => $indSub,
                     'KM_Num' =>$step,
                 ]);
             echo $step;
-        }*/
-        DB::table('connect_stud-sub')->insert(
+        }
+       /* DB::table('connect_stud-sub')->insert(
             ['stud_id' => $indexStud,
                 'sub_id' => $indSub,
                 'KM_Num' =>$step,
-            ]);
+            ]);*/
 
 
         return redirect()->route('mark');
     }
     public function Grade_check(Request $request){
         $valid = $request->validate([
-            'stud_id' => 'required|numeric',
+            'stud_id' => 'required',
             'sub_id' => 'required',
-            'KM_num'=>'required|numeric|min:0|max:5',
+            'KM_Num'=>'required|numeric|min:0',
             'grade' => 'required|numeric|min:0|max:5'
         ]);
         //dd($request);
         $indexStudGrade = $request->input('stud_id');
         $indexSubjGrade = $request->input('sub_id');
-        $indexKM_num=$request->input('KM_num');
+        $indexKM_num=$request->input('KM_Num');
         $indexGrade = $request->input('grade');
 
         $idSubj = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
-        $idSubjCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
-        $idStudCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
+        //$idSubjCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
+        //$idStudCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
 
-        if($idSubjCheck == NULL){
+        /*if($idSubjCheck == NULL){
             return view('grades',['erro' => 'Такого предмета несуществует']);
         }
 
         if($idStudCheck == NULL){
             return view('grades',['erro' => 'Такого предмета несуществует']);
-        }
-
+        }*/
         DB::table('connect_stud-sub')
             ->where('sub_id', $idSubj)
             ->where('stud_id', $indexStudGrade)
+            ->where('KM_Num', $indexKM_num)
             ->update(['grade' => $indexGrade]);
+       // ->insert(['grade'=>$indexGrade]);
 
         return redirect()->route('mark');
     }
