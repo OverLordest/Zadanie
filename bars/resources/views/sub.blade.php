@@ -72,11 +72,13 @@
                         </v-hover>-->
 
                         <v-chip-group>
+
                             <v-btn icon @click="Change">
                                     <v-icon>
                                         mdi-pencil
                                     </v-icon>
                             </v-btn>
+
                             <v-btn icon @click="Delete">
                                     <v-icon
                                         >
@@ -84,7 +86,6 @@
                                     </v-icon>
                             </v-btn>
                         </v-chip-group>
-
 
                     </template>
                     <template v-slot:top>

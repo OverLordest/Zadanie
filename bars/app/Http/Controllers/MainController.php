@@ -78,26 +78,26 @@ class MainController extends Controller
     {
         return view('mark');
     }
-    public function mark_check(Request $request_mark)
+    public function mark_check(Request $request_mark)//Привяка
     {
         $valid = $request_mark->validate([
             'stud_id' => 'required',
             'sub_id' => 'required',
-            'step' => 'required',
+         //   'step' => 'required',
         ]);
         $indexStud = $request_mark->input('stud_id');
         $indexSubj = $request_mark->input('sub_id');
-        $step = $request_mark->input('step');
+        //$step = $request_mark->input('step');
         $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
         //$indStud = DB::table('student_models')->where('student_name',$indexStud)->value('id');
-
+        //$step=1;
         for($step=1;$step<5;$step++){
             DB::table('connect_stud-sub')->insert(
                 ['stud_id' => $indexStud,
                     'sub_id' => $indSub,
                     'KM_Num' =>$step,
                 ]);
-            echo $step;
+            //echo $step;
         }
        /* DB::table('connect_stud-sub')->insert(
             ['stud_id' => $indexStud,
@@ -109,19 +109,19 @@ class MainController extends Controller
         return redirect()->route('mark');
     }
     public function Grade_check(Request $request){
-        $valid = $request->validate([
+        /*$valid = $request->validate([
             'stud_id' => 'required',
             'sub_id' => 'required',
             'KM_Num'=>'required|numeric|min:0',
             'grade' => 'required|numeric|min:0|max:5'
-        ]);
-        //dd($request);
-        $indexStudGrade = $request->input('stud_id');
-        $indexSubjGrade = $request->input('sub_id');
+        ]);*/
+        //dd($request)
+        $indexStud = $request->input('stud_id');
+        $indexSubj = $request->input('sub_id');
         $indexKM_num=$request->input('KM_Num');
         $indexGrade = $request->input('grade');
 
-        $idSubj = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
+        $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
         //$idSubjCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
         //$idStudCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
 
@@ -133,13 +133,12 @@ class MainController extends Controller
             return view('grades',['erro' => 'Такого предмета несуществует']);
         }*/
         DB::table('connect_stud-sub')
-            ->where('sub_id', $idSubj)
-            ->where('stud_id', $indexStudGrade)
+            ->where('sub_id', $indSub )
+            ->where('stud_id', $indexStud)
             ->where('KM_Num', $indexKM_num)
             ->update(['grade' => $indexGrade]);
        // ->insert(['grade'=>$indexGrade]);
-
-        return redirect()->route('mark');
+         return redirect()->route('mark');
     }
 //поиск по предметам
     public function sub()

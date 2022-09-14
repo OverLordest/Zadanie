@@ -20,7 +20,7 @@
 
         <!--Форма для привязки-->
     </div>
-    <h1 class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">Простановка оценок:</h1>
+    <h1 class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">Привязка студентов:</h1>
     <div class="paded nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <br>
         <!--Форма для проставления оценок-->
@@ -67,7 +67,7 @@
                         @click="sendPriv">
                         Привязать
                     </v-btn>
-                    <!--<v-text-field
+                    <v-text-field
                         v-model="KM_Num"
                         label="Номер КМа"
                     >
@@ -78,9 +78,9 @@
                     >
                     </v-text-field>
                     <v-btn
-                        @click="sendMark">
+                        @click="Grade_check">
                         Проставить оценку
-                    </v-btn>-->
+                    </v-btn>
                 </v-form>
                 <br>
               <!--  <v-data-table
@@ -132,8 +132,8 @@
                     valid: false,
                     stud_id:[],
                     sub_id:[],
-                   // KM_Num:[],
-                   // grade:[],
+                    KM_Num:[],
+                    grade:[],
                 }
             },
             methods:{
@@ -144,28 +144,28 @@
                     console.log(this.sub_id)
                     console.log(this.stud_id)
                     console.log(data)*/
-                    var step;
-                    for(step=1;step<2;step++){
+                    //var step=1;
+                  //  for(step=1;step<2;step++){
                         let data = new FormData()
                         data.append('sub_id',this.sub_id)
                         data.append('stud_id',this.stud_id)
-                        data.append('step',step)
-                        //console.log(this.sub_id)
-                        //console.log(this.stud_id)
+                       // data.append('step',this.step)
+                        console.log(this.sub_id)
+                        console.log(this.stud_id)
                         //console.log(step)
                         //console.log(data)
                     fetch('/mark/check',{
                         method:'POST',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         body:data
-                    });}
+                    });//}
                     /*fetch('/mark/check',{
                         method:'post',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     })*/
 
-                },/*
-                sendMark(){
+                },
+                Grade_check(){
                     let data = new FormData()
                     data.append('sub_id',this.sub_id)
                     data.append('stud_id',this.stud_id)
@@ -175,13 +175,14 @@
                     console.log(this.KM_Num)
                     data.append('grade',this.grade)
                     console.log(this.grade)
-                    //console.log(data)
+                    console.log(data)
                     fetch('Grade_check',{
                         method:'post',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        body:data
                     })
 
-                },*/
+                },
                 showTableUsersBySubj(){
 
                     let data = new FormData()
