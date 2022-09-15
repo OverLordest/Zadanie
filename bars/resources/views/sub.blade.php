@@ -73,23 +73,125 @@
 
                         <v-chip-group>
 
-                            <v-btn icon @click="Change">
-                                    <v-icon>
-                                        mdi-pencil
-                                    </v-icon>
-                            </v-btn>
 
-                            <v-btn icon @click="Delete">
-                                    <v-icon
+                            <v-dialog
+                                v-model="dialog"
+                                width="800"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        dark
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>
+                                            mdi-pencil
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+
+                                <v-card>
+                                    <v-card-title class="text-h5 grey lighten-2">
+                                        Изменение оценок за КМ
+                                    </v-card-title>
+
+                                    <v-divider></v-divider>
+
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+
+                                        <v-text-field
+                                            v-model="selectKM"
+                                            label="Выбор КМа"
+                                            class="mx-4"
+                                        ></v-text-field>
+
+                                        <v-text-field
+                                            v-model="selectGrade"
+                                            label="Простановка оценки"
+                                            class="mx-4"
+                                        ></v-text-field>
+                                        <v-divider></v-divider>
+
+                                        <v-btn
+                                            color="primary"
+                                            text
+                                            icon @click="Grade_check(item)"
                                         >
-                                        mdi-delete
-                                    </v-icon>
-                            </v-btn>
+                                            Изменение
+                                        </v-btn>
+
+                                        <v-spacer></v-spacer>
+
+
+                                        <v-btn
+                                            color="primary"
+                                            text
+                                            @click="dialog = false"
+                                        >
+                                            Выйти
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                            <v-dialog
+                                v-model="dialog_del"
+                                width="400"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        color="red"
+                                        dark
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon
+                                        >
+                                            mdi-delete
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+
+                                <v-card>
+                                    <v-card-title class="text-h5 grey lighten-2">
+                                        Удаление привязки студента
+                                    </v-card-title>
+
+                                    <v-divider></v-divider>
+                                    <v-card-text>
+                                        Вы точно уверены?
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+
+                                        <v-divider></v-divider>
+
+                                        <v-btn
+                                            color="primary"
+                                            text
+                                            icon @click="Help(item)"
+                                        >
+                                            удалить
+                                        </v-btn>
+
+                                        <v-spacer></v-spacer>
+
+
+                                        <v-btn
+                                            color="primary"
+                                            text
+                                            @click="dialog_del = false"
+                                        >
+                                            Отмена
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+
                         </v-chip-group>
 
                     </template>
-                    <template v-slot:top>
-                    </template>
+
                 </v-data-table>
             </v-main>
         </v-app>
@@ -127,9 +229,38 @@
                     search: '',
                     searchSubj: '',
                     valid: false,
+                    dialog: false,
+                    dialog_del:false,
+                    selectKM:'',
+                    selectGrade:'',
                 }
             },
             methods:{
+                Grade_check(item){//Функция простановки оценок
+                    let data = new FormData()
+                    data.append('sub_id',item.subject_name)
+                    data.append('stud_id',item.id)
+                    data.append('KM_Num',this.selectKM)
+                    //console.log(item.subject_name)
+                    //console.log(item.id)
+                    //console.log(this.selectKM)
+                    data.append('grade',this.selectGrade)
+                    //console.log(this.selectGrade)
+                    //console.log(data)
+                    fetch('Grade_check',{
+                        method:'post',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        body:data
+                    })
+                   // this.ShowTableMark()
+                },
+                Help(item){
+                    //this.selectKM
+                    //this.selectGrade
+                    //item.id
+                    console.log(item)
+
+                },
                 //Функция для выбора студентов в дисциплине
                 FUNC(){
                     console.log('1')

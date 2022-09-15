@@ -165,17 +165,17 @@
                     })*/
 
                 },
-                Grade_check(){
+                Grade_check(){//Функция простановки оценок
                     let data = new FormData()
                     data.append('sub_id',this.sub_id)
                     data.append('stud_id',this.stud_id)
                     data.append('KM_Num',this.KM_Num)
-                    console.log(this.sub_id)
-                    console.log(this.stud_id)
-                    console.log(this.KM_Num)
+                    //console.log(this.sub_id)
+                    //console.log(this.stud_id)
+                    //console.log(this.KM_Num)
                     data.append('grade',this.grade)
-                    console.log(this.grade)
-                    console.log(data)
+                    //console.log(this.grade)
+                    //console.log(data)
                     fetch('Grade_check',{
                         method:'post',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

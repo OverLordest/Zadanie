@@ -45,16 +45,7 @@ class MainController extends Controller
         $new_sub=new SubjectModel();
         return view('subjects',['new_sub'=>$new_sub->all()]);
     }
-   /* public function subject_check(Request $request_sub)
-    {
-        $valid = $request_sub->validate([
-            'subject' => 'required|min:2|max:40'
-        ]);
-        $new_sub = new SubjectModel();
-        $new_sub->subject_name = $request_sub->input('subject');
-        $new_sub->save();
-        return redirect()->route('subject');
-    }*/
+
     public function showTableSub(){
         $subj = DB::table('subject_models')->get();
         return response()->json(['subj' => $subj]);
@@ -78,7 +69,7 @@ class MainController extends Controller
     {
         return view('mark');
     }
-    public function mark_check(Request $request_mark)//Привяка
+    public function mark_check(Request $request_mark)//Привязка
     {
         $valid = $request_mark->validate([
             'stud_id' => 'required',
@@ -99,45 +90,22 @@ class MainController extends Controller
                 ]);
             //echo $step;
         }
-       /* DB::table('connect_stud-sub')->insert(
-            ['stud_id' => $indexStud,
-                'sub_id' => $indSub,
-                'KM_Num' =>$step,
-            ]);*/
-
 
         return redirect()->route('mark');
     }
     public function Grade_check(Request $request){
-        /*$valid = $request->validate([
-            'stud_id' => 'required',
-            'sub_id' => 'required',
-            'KM_Num'=>'required|numeric|min:0',
-            'grade' => 'required|numeric|min:0|max:5'
-        ]);*/
-        //dd($request)
         $indexStud = $request->input('stud_id');
         $indexSubj = $request->input('sub_id');
         $indexKM_num=$request->input('KM_Num');
         $indexGrade = $request->input('grade');
 
         $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
-        //$idSubjCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
-        //$idStudCheck = DB::table('subject_models')->where('subject_name',$indexSubjGrade)->value('id');
 
-        /*if($idSubjCheck == NULL){
-            return view('grades',['erro' => 'Такого предмета несуществует']);
-        }
-
-        if($idStudCheck == NULL){
-            return view('grades',['erro' => 'Такого предмета несуществует']);
-        }*/
         DB::table('connect_stud-sub')
             ->where('sub_id', $indSub )
             ->where('stud_id', $indexStud)
             ->where('KM_Num', $indexKM_num)
             ->update(['grade' => $indexGrade]);
-       // ->insert(['grade'=>$indexGrade]);
          return redirect()->route('mark');
     }
 //поиск по предметам
