@@ -268,6 +268,7 @@
                     //data.append('KM',this.KM)
                     for (var i = 0; i < this.KM.length; i++) {
                         data.append('KM[]', this.KM[i]);
+                        console.log(this.KM[i])
                     }
                     console.log(this.sub_id)
                     console.log(this.stud_id)

@@ -125,18 +125,16 @@ class MainController extends Controller
         //$indexGrade = $request->input('grade');
 
         $indSub = DB::table('subject_models')->where('subject_name', $indexSubj)->value('id');
+
         for ($step = 0; $step <= 3; $step++) {
-            DB::table('connect_stud-sub')
-                ->where('stud_id', $indexStud)
-                ->where('sub_id', $indSub)
-                ->where('KM_Num', ($step + 1))
-                ->update(['grade' => $KMs[$step]]);
+                DB::table('connect_stud-sub')
+                    ->where('stud_id', $indexStud)
+                    ->where('sub_id', $indSub)
+                    ->where('KM_Num', ($step + 1))
+                    ->update(['grade' => $KMs[$step]==='null'?NUll:$KMs[$step]]);
+
+
         }
-            /*DB::table('connect_stud-sub')
-                ->where('sub_id', $indSub )
-                ->where('stud_id', $indexStud)
-                ->where('KM_Num', (1))
-                ->update(['grade' => $KMs->{KM1}]);*/
             return redirect()->route('mark');
 
     }
@@ -162,7 +160,7 @@ class MainController extends Controller
         JOIN subject_models
         ON subject_models.id = [connect_stud-sub].sub_id WHERE subject_name = '".$show_subj ."'
         ORDER BY student_models.id,[connect_stud-sub].KM_Num;");
-        return json_encode([$selection/*$stud*/]);
+        return json_encode([$selection]);
 
     }
 
