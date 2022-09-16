@@ -116,21 +116,29 @@ class MainController extends Controller
         DB::delete("delete from [connect_stud-sub] where sub_id = '".$indSub ."' and stud_id = '".$indexStud ."'");
         return redirect()->route('sub');
     }
-    public function ChangeMark(Request $request){//Простановка оценок
+    public function ChangeMark(Request $request)
+    {//Простановка оценок
         $indexStud = $request->input('stud_id');
         $indexSubj = $request->input('sub_id');
-        $KMs=$request->input('KM');
-       // $KMs=(array) $TKMs;
+        $KMs = $request->input('KM');
+        // $KMs=(array) $TKMs;
         //$indexGrade = $request->input('grade');
 
-        $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
+        $indSub = DB::table('subject_models')->where('subject_name', $indexSubj)->value('id');
+        for ($step = 0; $step <= 3; $step++) {
+            DB::table('connect_stud-sub')
+                ->where('stud_id', $indexStud)
+                ->where('sub_id', $indSub)
+                ->where('KM_Num', ($step + 1))
+                ->update(['grade' => $KMs[$step]]);
+        }
+            /*DB::table('connect_stud-sub')
+                ->where('sub_id', $indSub )
+                ->where('stud_id', $indexStud)
+                ->where('KM_Num', (1))
+                ->update(['grade' => $KMs->{KM1}]);*/
+            return redirect()->route('mark');
 
-        DB::table('connect_stud-sub')
-            ->where('sub_id', $indSub )
-            ->where('stud_id', $indexStud)
-            ->where('KM_Num', (1))
-            ->update(['grade' => $KMs->{KM1}]);
-        return redirect()->route('mark');
     }
 
 //поиск по предметам

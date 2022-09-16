@@ -102,26 +102,26 @@
                             <v-spacer></v-spacer>
                             <v-column>
                             <v-text-field
-                                v-model="KM.KM1"
+                                v-model="KM[0]"
                                 label="KM 1"
                                 class="mx-4"
                             ></v-text-field>
 
                             <v-text-field
-                                v-model="KM.KM2"
+                                v-model="KM[1]"
                                 label="КМ 2"
                                 class="mx-4"
                             ></v-text-field>
                             </v-column>
                         <v-column>
                             <v-text-field
-                                v-model="KM.KM3"
+                                v-model="KM[2]"
                                 label="КМ 3"
                                 class="mx-4"
                             ></v-text-field>
 
                             <v-text-field
-                                v-model="KM.KM4"
+                                v-model="KM[3]"
                                 label="КМ 4"
                                 class="mx-4"
                             ></v-text-field>
@@ -227,7 +227,8 @@
                     valid: false,
                     ChangeDialog: false,
                     dialog_del:false,
-                    KM:{'KM1':null,'KM2':null,'KM3':null,'KM4':null},
+                    //KM:{'KM1':null,'KM2':null,'KM3':null,'KM4':null},
+                    KM:[null,null,null,null],
                     sub_id:'',
                     stud_id:'',
                     //selectKM4:'',
@@ -240,16 +241,20 @@
             },
             methods:{
                 openChangeDilog(item){
-                    this.KM.KM1=item.km1
+                    /*this.KM.KM1=item.km1
                     this.KM.KM2=item.km2
                     this.KM.KM3=item.km3
-                    this.KM.KM4=item.km4
+                    this.KM.KM4=item.km4*/
+                    this.KM[0] = item.km1
+                    this.KM[1] = item.km2
+                    this.KM[2] = item.km3
+                    this.KM[3] = item.km4
                     this.sub_id=item.subject_name
                     this.stud_id=item.id
                     this.ChangeDialog=true
                     this.item=item
-                    //console.log(item)
-                    //console.log(this.KM)
+                    console.log(' openChangeDilog item: ',item)
+                    console.log(' openChangeDilog KM: ',this.KM)
                 },
                 Open_dialog_del(item){
                     this.sub_id=item.subject_name
@@ -260,16 +265,14 @@
                     let data = new FormData()
                     data.append('sub_id',this.sub_id)
                     data.append('stud_id',this.stud_id)
-                    data.append('KM',this.KM)
+                    //data.append('KM',this.KM)
+                    for (var i = 0; i < this.KM.length; i++) {
+                        data.append('KM[]', this.KM[i]);
+                    }
                     console.log(this.sub_id)
                     console.log(this.stud_id)
                     console.log(this.KM)
-                    /*for (let i=0;i<4;i++){
-                        data.append('KM',this.KM->{'KM1'});
-                    }*/
-                   // data.append('grade',this.selectGrade)
-                  //  console.log(this.selectGrade)
-                    //console.log(data)
+                    //console.log(data.KM)
                     fetch('ChangeMark',{
                         method:'post',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
