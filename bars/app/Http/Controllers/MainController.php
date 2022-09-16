@@ -93,7 +93,7 @@ class MainController extends Controller
 
         return redirect()->route('mark');
     }
-    public function Grade_check(Request $request){
+    public function Grade_check(Request $request){//Простановка оценок
         $indexStud = $request->input('stud_id');
         $indexSubj = $request->input('sub_id');
         $indexKM_num=$request->input('KM_Num');
@@ -108,6 +108,31 @@ class MainController extends Controller
             ->update(['grade' => $indexGrade]);
          return redirect()->route('mark');
     }
+    public function Priv_del(Request $request)//удаление привязки
+    {
+        $indexStud = $request->input('stud_id');
+        $indexSub = $request->input('sub_id');
+        $indSub = DB::table('subject_models')->where('subject_name',$indexSub)->value('id');
+        DB::delete("delete from [connect_stud-sub] where sub_id = '".$indSub ."' and stud_id = '".$indexStud ."'");
+        return redirect()->route('sub');
+    }
+    public function ChangeMark(Request $request){//Простановка оценок
+        $indexStud = $request->input('stud_id');
+        $indexSubj = $request->input('sub_id');
+        $KMs=$request->input('KM');
+       // $KMs=(array) $TKMs;
+        //$indexGrade = $request->input('grade');
+
+        $indSub = DB::table('subject_models')->where('subject_name',$indexSubj)->value('id');
+
+        DB::table('connect_stud-sub')
+            ->where('sub_id', $indSub )
+            ->where('stud_id', $indexStud)
+            ->where('KM_Num', (1))
+            ->update(['grade' => $KMs->{KM1}]);
+        return redirect()->route('mark');
+    }
+
 //поиск по предметам
     public function sub()
     {

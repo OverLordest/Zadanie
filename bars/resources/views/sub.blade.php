@@ -27,6 +27,7 @@
                     label="Предметы"
                     :items="subjs"
                     item-text="subject_name"
+                    item-value="subjectID"
                     v-model="selectedSubj"
                     @change="ShowTableMark()"
                     clearable
@@ -61,139 +62,134 @@
                     <template
                         v-slot:item._actions="{ item }"
                     >
-                        <!--<div>ред/удал</div>
-                        <v-btn>
-                            del
+                        <v-btn
+                            dark
+                            @click="openChangeDilog(item)"
+                        >
+                            <v-icon>
+                                mdi-pencil
+                            </v-icon>
                         </v-btn>
-                        <v-hover v-slot:default>
-                        <v-icon>
-                            mdi-badminton
-                        </v-icon>
-                        </v-hover>-->
-
-                        <v-chip-group>
-
-
-                            <v-dialog
-                                v-model="dialog"
-                                width="800"
+                        <v-btn
+                            color="red"
+                            dark
+                            @click="Open_dialog_del(item)"
+                        >
+                            <v-icon
                             >
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        dark
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >
-                                        <v-icon>
-                                            mdi-pencil
-                                        </v-icon>
-                                    </v-btn>
-                                </template>
-
-                                <v-card>
-                                    <v-card-title class="text-h5 grey lighten-2">
-                                        Изменение оценок за КМ
-                                    </v-card-title>
-
-                                    <v-divider></v-divider>
-
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-
-                                        <v-text-field
-                                            v-model="selectKM"
-                                            label="Выбор КМа"
-                                            class="mx-4"
-                                        ></v-text-field>
-
-                                        <v-text-field
-                                            v-model="selectGrade"
-                                            label="Простановка оценки"
-                                            class="mx-4"
-                                        ></v-text-field>
-                                        <v-divider></v-divider>
-
-                                        <v-btn
-                                            color="primary"
-                                            text
-                                            icon @click="Grade_check(item)"
-                                        >
-                                            Изменение
-                                        </v-btn>
-
-                                        <v-spacer></v-spacer>
-
-
-                                        <v-btn
-                                            color="primary"
-                                            text
-                                            @click="dialog = false"
-                                        >
-                                            Выйти
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog>
-                            <v-dialog
-                                v-model="dialog_del"
-                                width="400"
-                            >
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        color="red"
-                                        dark
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >
-                                        <v-icon
-                                        >
-                                            mdi-delete
-                                        </v-icon>
-                                    </v-btn>
-                                </template>
-
-                                <v-card>
-                                    <v-card-title class="text-h5 grey lighten-2">
-                                        Удаление привязки студента
-                                    </v-card-title>
-
-                                    <v-divider></v-divider>
-                                    <v-card-text>
-                                        Вы точно уверены?
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-
-                                        <v-divider></v-divider>
-
-                                        <v-btn
-                                            color="primary"
-                                            text
-                                            icon @click="Help(item)"
-                                        >
-                                            удалить
-                                        </v-btn>
-
-                                        <v-spacer></v-spacer>
-
-
-                                        <v-btn
-                                            color="primary"
-                                            text
-                                            @click="dialog_del = false"
-                                        >
-                                            Отмена
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog>
-
-                        </v-chip-group>
+                                mdi-delete
+                            </v-icon>
+                        </v-btn>
 
                     </template>
 
                 </v-data-table>
             </v-main>
+            <v-dialog
+                v-model="ChangeDialog"
+                width="800"
+            >
+                <v-card>
+                    <v-card-title class="text-h5 grey lighten-2">
+                        Изменение оценок за КМ
+                    </v-card-title>
+
+                    <v-divider></v-divider>
+
+                    <v-card-actions>
+
+
+                            <v-spacer></v-spacer>
+                            <v-column>
+                            <v-text-field
+                                v-model="KM.KM1"
+                                label="KM 1"
+                                class="mx-4"
+                            ></v-text-field>
+
+                            <v-text-field
+                                v-model="KM.KM2"
+                                label="КМ 2"
+                                class="mx-4"
+                            ></v-text-field>
+                            </v-column>
+                        <v-column>
+                            <v-text-field
+                                v-model="KM.KM3"
+                                label="КМ 3"
+                                class="mx-4"
+                            ></v-text-field>
+
+                            <v-text-field
+                                v-model="KM.KM4"
+                                label="КМ 4"
+                                class="mx-4"
+                            ></v-text-field>
+                        </v-column>
+                        <v-divider></v-divider>
+
+                        <v-spacer></v-spacer>
+                        <v-row>
+                        <v-btn
+                            color="primary"
+                            text
+                           @click="ChangeMark"
+                        >
+                            Изменение
+                        </v-btn>
+
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="ChangeDialog = false"
+                        >
+                            Выйти
+                        </v-btn>
+                        </v-row>
+
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+                v-model="dialog_del"
+                width="400"
+            >
+
+                <v-card>
+                    <v-card-title class="text-h5 grey lighten-2">
+                        Удаление привязки студента
+                    </v-card-title>
+
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        Вы точно уверены?
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <v-divider></v-divider>
+
+                        <v-btn
+                            color="primary"
+                            text
+                            icon @click="Priv_del"
+                        >
+                            удалить
+                        </v-btn>
+
+                        <v-spacer></v-spacer>
+
+
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="dialog_del = false"
+                        >
+                            Отмена
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-app>
     </div>
     <script>
@@ -229,37 +225,69 @@
                     search: '',
                     searchSubj: '',
                     valid: false,
-                    dialog: false,
+                    ChangeDialog: false,
                     dialog_del:false,
-                    selectKM:'',
-                    selectGrade:'',
+                    KM:{'KM1':null,'KM2':null,'KM3':null,'KM4':null},
+                    sub_id:'',
+                    stud_id:'',
+                    //selectKM4:'',
+                    //selectKM3:'',
+                    //selectKM2:'',
+                    //selectKM1:'',
+                    //selectKM:'',
+                    //selectGrade:'',
                 }
             },
             methods:{
-                Grade_check(item){//Функция простановки оценок
+                openChangeDilog(item){
+                    this.KM.KM1=item.km1
+                    this.KM.KM2=item.km2
+                    this.KM.KM3=item.km3
+                    this.KM.KM4=item.km4
+                    this.sub_id=item.subject_name
+                    this.stud_id=item.id
+                    this.ChangeDialog=true
+                    this.item=item
+                    //console.log(item)
+                    //console.log(this.KM)
+                },
+                Open_dialog_del(item){
+                    this.sub_id=item.subject_name
+                    this.stud_id=item.id
+                    this.dialog_del=true
+                },
+                ChangeMark(){//Функция простановки оценок
                     let data = new FormData()
-                    data.append('sub_id',item.subject_name)
-                    data.append('stud_id',item.id)
-                    data.append('KM_Num',this.selectKM)
-                    //console.log(item.subject_name)
-                    //console.log(item.id)
-                    //console.log(this.selectKM)
-                    data.append('grade',this.selectGrade)
-                    //console.log(this.selectGrade)
+                    data.append('sub_id',this.sub_id)
+                    data.append('stud_id',this.stud_id)
+                    data.append('KM',this.KM)
+                    console.log(this.sub_id)
+                    console.log(this.stud_id)
+                    console.log(this.KM)
+                    /*for (let i=0;i<4;i++){
+                        data.append('KM',this.KM->{'KM1'});
+                    }*/
+                   // data.append('grade',this.selectGrade)
+                  //  console.log(this.selectGrade)
                     //console.log(data)
-                    fetch('Grade_check',{
+                    fetch('ChangeMark',{
                         method:'post',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         body:data
                     })
                    // this.ShowTableMark()
                 },
-                Help(item){
-                    //this.selectKM
-                    //this.selectGrade
-                    //item.id
-                    console.log(item)
-
+                Priv_del(){
+                    let data = new FormData()
+                    //console.log(this.sub_id)
+                    //console.log(this.stud_id)
+                    data.append('sub_id',this.sub_id)
+                    data.append('stud_id',this.stud_id)
+                    fetch('Priv_del',{
+                        method:'post',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        body:data
+                    })
                 },
                 //Функция для выбора студентов в дисциплине
                 FUNC(){
@@ -358,14 +386,6 @@
                         })
                 },
 
-                Change(){
-                    console.log('change')
-                    alert('Change')
-                },
-                Delete(){
-                    console.log('Delete')
-                    alert('Delete')
-                },
             },
 
             mounted: function (){

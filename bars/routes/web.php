@@ -33,6 +33,8 @@ Route::post('Grade_check','MainController@Grade_check','Grade_check' );
 
 Route::get('/sub','MainController@sub' )->name('sub');
 Route::post('/ShowTableMark','MainController@ShowTableMark','ShowTableMark');
+Route::post('/Priv_del','MainController@Priv_del','Priv_del' );
+Route::post('/ChangeMark','MainController@ChangeMark','ChangeMark' );
 
 Route::get('deletesub/{id}','MainController@destroysub');
 Auth::routes();
